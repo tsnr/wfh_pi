@@ -158,6 +158,8 @@ VPN Server> BridgeCreate [Hub名] /DEVICE:[社内LAN側のNIC]
 
 ## ライセンス
 
+<pre>
 Copyright (c) 2020 Hideki Sakamoto
 Released under the MIT license
 https://opensource.org/licenses/mit-license.php
+</pre>

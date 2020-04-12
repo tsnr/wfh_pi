@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# wlan0 setup script for stealth SSID
+#             2020/04 Hideki Sakamoto
+#
+
 # default locale
 _locale="ja"
 

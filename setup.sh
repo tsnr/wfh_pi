@@ -1,5 +1,12 @@
 #!/bin/bash
 #
+#   SoftEther VPN client setup script for Raspberry Pi
+#                              2020/04 Hideki Sakamoto
+#
+#     usage: sudo bash ./setup.sh [ -f config_file ]
+#
+
+#
 _wdir=$(/bin/pwd)
 _result=${_wdir}/result.txt
 [ -e "$_result" ] && /bin/mv ${_result} ${_result}.bak
