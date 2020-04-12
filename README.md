@@ -65,7 +65,7 @@ Raspberry Piの初期設定を行います。
 再起動してデスクトップ画面が表示されたら、ターミナル（上部ツールバー左側の黒い四角）をクリックして起動し、以下のコマンドを実行します。
 
 ```
-$ git clone https://github.com/tsnr/wfh_pi
+$ git clone https://github.com/tsnr/wfh_pi.git
 $ cd wfh_pi
 $ sudo bash ./setup.sh
 ```
