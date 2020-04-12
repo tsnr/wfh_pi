@@ -1,8 +1,6 @@
 # Work from home with Raspberry pi (wfh_pi)
 
-[ラズベリーパイ財団](https://www.raspberrypi.org)によって開発されているシングルボードコンピュータ"[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/r
-aspberry-pi-4-model-b/)"に、[SoftEther VPNプロジェクト](https://ja.softether.org)で配布されているSoftEther VPN clientを導入してリモートワーク環境を構築した際の知
-見と支援ツールを公開します。
+[ラズベリーパイ財団](https://www.raspberrypi.org)によって開発されているシングルボードコンピュータ"[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)"に、[SoftEther VPNプロジェクト](https://ja.softether.org)で配布されているSoftEther VPN clientを導入してリモートワーク環境を構築した際の知見と支援ツールを公開します。
 
 新型コロナウイルスの拡大を受けて緊急事態宣言が発令され、各企業にリモートワークの推進が求められる中、中小企業ではなかなか導入が進んでいない状況があるようです。
 
