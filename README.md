@@ -18,26 +18,11 @@ Raspberry Piにオープンソース版のSoftEther VPN clientを導入してリ
 
 ### SoftEther VPN serverの構築と設定
 
-おそらくこの手順が最初にして最大の難関なのですが、筆者は固定グローバルIPアドレスを取得しているネットワーク上のFreeBSDというOSのサーバでVPN serverを構築したため、固定IPを持たない一般的なネットワークや、Windowsマシンでのサーバの構築ノウハウを逆に持ち合わせていません。
+おそらくこの手順が最初にして最大の難関なのですが、筆者は固定グローバルIPアドレスを取得しているネットワーク上のFreeBSDというOSのサーバでVPN serverを構築したため、固定IPを持たない一般的なネットワークや、Windowsマシンでのサーバの構築ノウハウを逆に持ち合わせていません。 このため、とりあえずは公式ドキュメントの紹介のみとなります。
 
-このため、申し訳ありませんがこの手順については公式ドキュメントの紹介だけになります。
-
-接続したい社内LANと直接通信可能な固定グローバルIPがない場合、SoftEther VPNプロジェクトの[公式ドキュメント](https://ja.softether.org/4-docs/2-howto/1.VPN_for_On-premise/2.Remote_Access_VPN_to_LAN)を参考に、VPNサーバを構築します。
-
-筆者は確認していませんが、Raspberry PiでVPN serverを構築するノウハウもいくつか公開されているようですので、もしVPN serverを導入するのに適切なマシンがない場合「raspberry pi softether vpn 構築」などのキーワードで検索してみてください。
-
-この[公式ドキュメント](https://ja.softether.org/4-docs/2-howto/1.VPN_for_On-premise/2.Remote_Access_VPN_to_LAN)で説明されている手順の、ステップ1と2までを進めてください。ステップ3と4に相当する作業は、後述するRaspberry Piの構築時に実施するので不要です。その際に以下の情報が必要となるので、メモしておきます。
+[公式ドキュメント](https://ja.softether.org/4-docs/2-howto/1.VPN_for_On-premise/2.Remote_Access_VPN_to_LAN)で説明されている手順の、ステップ1と2までを進めてください。ステップ3と4に相当する作業は、後述するRaspberry Piの構築時に実施するので不要です。その際に以下の情報が必要となるので、メモしておきます。
 * 仮想Hubの名前
 * 仮想サーバのホスト名
-
-#### グローバルIP使用時のTips
-
-参考までに、筆者がグローバルIPアドレス環境下で構築した際に気付いた点などを列挙します。
-
-* 基本的にはマルチホーム（グローバルと社内LANに接続するNICを持つ）構成とした上でルーティングを「しない」構成にするのがよいと思います
-* サーバの初回起動前にadminip.txtというファイルを作成して、[リモート管理へのアクセス](https://ja.softether.org/4-docs/1-manual/3._SoftEther_VPN_Server_マニュアル/3.3_VPN_Server_管理#3.3.18_IP_.E3.82.A2.E3.83.89.E3.83.AC.E3.82.B9.E3.81.AB.E3.82.88.E3.82.8B.E3.83.AA.E3.83.A2.E3.83.BC.E3.83.88.E7.AE.A1.E7.90.86.E6.8E.A5.E7.B6.9A.E5.85.83.E3.81.AE.E5.88.B6.E9.99.90)を最低限プライベートアドレス側だけに制限しましょう。
-* ポート番号は、標準の443, 992, 5555番は全て止めて別の番号にしました（ポートスキャンからのサービス標的型の攻撃を避けられます）。
-* VPN serverをVMware上の仮想サーバ上に構築する場合、社内LAN側に接続しているVMwareの仮想スイッチで、「無差別モード」を有効にする必要がありました。
 
 ### 社内PCの事前準備
 
@@ -92,19 +77,78 @@ $ sudo bash ./setup.sh
 
 Raspberry Piのセットアップが完了したら、本体とuser_note.txtおよび以下のファイルを印刷してユーザに渡します。
 
-セットアップ手順書：
-  docs/UserManual-setup.docx
-使い方：
-  (VNCなし版) docs/UsersManual-usage.docx
+<dl>
+  <dt>セットアップ手順書：</dt>
+  <dd>docs/UserManual-setup.docx</dd>
+  <dt>使い方：</dt>
+  <dd>
+  (VNCなし版) docs/UsersManual-usage.docx <br>
   (VNCあり版) docs/UsersManual-usage_RealVNC.docx
+  </dd>
+</dl>
 
-## トラブルシュート
+## その他
 
 ### 会社と自宅でIPのセグメントが重なった場合
 
 不運にも会社と自宅の両方で192.168.0.0/24など利用していて、IPのセグメントが重なってしまった場合、たとえIPアドレスを重ならないようにしても、余程トリッキーな設定を両方でやらない限り通信は不可能です。
 
 そうなってしまった場合に一番手っ取り早い解決策は、自宅のネットワークとRaspberry Piの間にルータを1台挟んで、Raspberry Piには別のセグメントのIPアドレスを割り当てるようにする方法です。
+
+#### VPN server をグローバルIPを使って構築する
+
+参考までに、筆者がグローバルIPアドレス環境下で構築した際に気付いた点などを列挙します。
+
+* 基本的にはマルチホーム（グローバルと社内LANに接続するNICを持つ）構成とした上でルーティングを「しない」構成にするのがよいと思います
+* サーバの初回起動前にadminip.txtというファイルを作成して、[リモート管理へのアクセス](https://ja.softether.org/4-docs/1-manual/3._SoftEther_VPN_Server_マニュアル/3.3_VPN_Server_管理#3.3.18_IP_.E3.82.A2.E3.83.89.E3.83.AC.E3.82.B9.E3.81.AB.E3.82.88.E3.82.8B.E3.83.AA.E3.83.A2.E3.83.BC.E3.83.88.E7.AE.A1.E7.90.86.E6.8E.A5.E7.B6.9A.E5.85.83.E3.81.AE.E5.88.B6.E9.99.90)を最低限プライベートアドレス側だけに制限しましょう。
+* ポート番号は、標準の443, 992, 5555番は全て止めて別の番号にしました（ポートスキャンからのサービス標的型の攻撃を避けられます）。
+* VPN serverをVMware上の仮想サーバ上に構築する場合、社内LAN側に接続しているVMwareの仮想スイッチで、「無差別モード」を有効にする必要がありました。
+
+FreeBSDへのSoftEther VPN serverの導入はPortsを使う場合以下のような手順となります。
+
+インストール
+```
+# cd /usr/ports/security/softether
+# make install
+```
+
+管理接続元のアクセス制限
+```
+# echo "127.0.0.1" > /var/db/softether/adminip.txt
+# echo "[社内LANセグメント] >> /var/db/softether/adminip.txt
+  :
+```
+
+ポート番号変更
+```
+### デフォルトの設定ファイル生成
+# /usr/local/etc/rc.d/softether_server onestart
+# /usr/local/etc/rc.d/softether_server onestop
+
+### configファイルを直接編集
+# vim /var/db/softether/vpn_server.config
+  declare ListenerListの中のListener*を削除、ポート番号変更
+```
+
+初期設定
+```
+# /usr/local/etc/rc.d/softether_server onestart
+# /usr/local/libexec/softether/vpncmd localhost:[ポート番号] /SERVER
+
+### 管理用パスワードの設定
+VPN Server> ServerPasswordSet
+
+### SSL証明書の設定
+VPN Server> ServerCertSet /LOADCERT:[SSL証明書のパス] /LOADKEY:[秘密鍵のパス]
+### (※パスではなく内容を読み込んで設定ファイルに保管するようなので、証明書の更新時には注意が必要）
+
+### Hubの作成
+VPN Server> HubCreate [Hub名] /PASSWORD:[パスワード]
+
+### Hubのローカルブリッジ設定
+VPN Server> BridgeCreate [Hub名] /DEVICE:[社内LAN側のNIC]
+```
+
 
 ## 免責
 
