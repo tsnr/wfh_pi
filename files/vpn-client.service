@@ -1,0 +1,14 @@
+[Unit]
+Description=Softether VPN Client Service
+After=network.target
+
+[Service]
+Type=forking
+User=root
+ExecStart=/bin/bash /opt/vpnclient/service start
+ExecStop=/bin/bash /opt/vpnclient/service stop
+Restart=on-abort
+WorkingDirectory=/opt/vpnclient
+
+[Install]
+WantedBy=multi-user.target

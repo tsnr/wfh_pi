@@ -1,0 +1,56 @@
+#!/bin/bash
+# default locale
+_locale="ja"
+
+### functions ###
+# usage: ask message key [default [prompt]]
+ask () {
+  local _echo_opt=''
+  [ "$1" = "-n" ] && _echo_opt=$1 && shift
+  echo $_echo_opt "$1"
+
+  local _key=$2 _default=$3 _prompt=${4:-"${2}"} _val=''
+  [ -n "$_default" -a "$_default" != "_blank" ] && _prompt="${_prompt}[$_default]?"
+  [ "$_prompt" = "$2" ] && _prompt="${_prompt}?"
+  while [ -z "$_val" ]
+  do
+    read -p "${_prompt} " _val
+    [ -z "$_val" ] && _val="$_default"
+  done
+  [ "$_val" = "_blank" ] && _val=''
+  eval "${_key}=\"$_val\""
+}
+
+### main ###
+_wdir=$(/bin/pwd)
+
+while getopts l OPT
+do
+  case "$OPT" in
+    l)
+      # XXX
+      _locale=$OPTARG
+      [ -r ${_wdir}/setup_wlan.d/${_locale}.txt ] || abort "No such locale: $1"
+      ;;
+  esac
+done
+
+. ${_wdir}/setup_wlan.d/${_locale}.txt
+
+ask $_m_ask_ssid ssid
+ask $_m_ask_key key
+
+_out=${_wdir}/setup_wlan.d/wpa_supplicant.conf
+/bin/cp ${_wdir}/setup_wlan.d/wpa_supplicant.conf.head $_out
+/usr/bin/wpa_passphrase "$ssid" "$key" | /bin/sed -e 's/#psk.*$/scan_ssid=1/; $i\\tkey_mgmt=WPA-PSK' >> $_out
+
+echo $_m_update_conf
+sudo /usr/bin/install -o root -g root -m 0644 $_out /etc/wpa_supplicant/wpa_supplicant.conf
+/bin/rm -f $_out
+
+ask -n "$_m_ask_reboot" _yn 'y' '(Y/n)'
+case "$_yn" in
+  [yY]*)
+    sudo /sbin/reboot
+    ;;
+esac

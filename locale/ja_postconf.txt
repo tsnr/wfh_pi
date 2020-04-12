@@ -1,0 +1,13 @@
+
+_m_vnc_note2="
+続いて、以下の手順でVNCを設定します。
+  1. 画面上部のツールバー右側にある'VNC'アイコンをクリック
+  2. 表示されたウィンドウ右上のメニューアイコン（三本線）-> 'Options'をクリック
+  3. 左メニューの'Users & Permissions'をクリック
+  4. [Add]ボタンをクリック
+  5. Name欄に '${user_name}' を入力して[OK]をクリック
+  6. '${user_name}' のPermissionsが'Normal permissions'になっていることを確認
+  7. [Apply] をクリック
+  8. [OK] をクリック
+  9. VNC Server ウインドウを閉じる
+"

@@ -1,0 +1,45 @@
+#
+#       Dhclient postExec routing for SoftEther VPN client
+#                                  2020/04 Hideki Sakamoto
+#
+_conf="/opt/vpnclient/service.conf"
+
+if [ -r $_conf ]; then
+  . $_conf
+
+  case "$reason" in
+  BOUND|RENEW|REBIND|REBOOT|TIMEOUT)      
+    if [ "$interface" = "$vpn_device" ]; then
+      if [ "$vpn_default_route" = "yes" ]; then
+        for _if in $physical_devices; do
+          if /sbin/ifconfig $_if | /bin/grep -q RUNNING
+          then
+            /sbin/ip -4 route del default dev $_if >/dev/null 2>&1
+          fi
+        done
+      else
+        # delete default route set in /sbin/dhclient-script
+        /sbin/ip -4 route del default dev $interface >/dev/null 2>&1
+      fi
+    fi
+    ;;
+  BOUND6|RENEW6|REBIND6)
+    # ToDo or not ToDo :)
+    ;;
+  EXPIRE|FAIL|RELEASE|STOP)
+    if [ "$interface" = "$vpn_device" -a "$vpn_default_route" = "yes" ]; then
+      for _if in $physical_devices; do
+        if /sbin/ifconfig $_if | /bin/grep -q RUNNING
+        then
+          /sbin/ip -4 route del $vpn_server_ip dev $_if >/dev/null 2>&1
+        fi
+      done
+      # restore routing tables
+      /sbin/dhcpcd -g
+    fi
+    ;;
+  EXPIRE6|RELEASE6|STOP6)
+    # ToDo or not ToDo :)
+    ;;
+  esac
+fi

@@ -1,0 +1,8 @@
+_m_ask_ssid="無線LANのSSID: "
+_m_ask_key="無線LANの暗号化キー: "
+_m_update_conf="無線LANの設定ファイルを更新します"
+
+_m_ask_reboot="
+無線LANを有効にするには再起動が必要です．
+今すぐ再起動しますか？
+"

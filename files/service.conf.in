@@ -1,0 +1,29 @@
+#
+# service configuration for SoftEther VPN client
+#                        2020/04 Hideki Sakamoto
+#
+
+# すべての通信をVPN経由で通したい場合は"yes"(小文字)にします
+# If you want to pass all communication through VPN, set "yes"(case sensitive)
+vpn_default_route="__VDR_YESNO__"
+
+# VPNサーバのIPアドレス（ホスト名）かネットワーク(XXX.XXX.XXX.XXX/MM)を指定します
+# IP address(hostname) or network(XXX.XXX.XXX.XXX/MM) of VPN server.
+vpn_server="__V_SRV__"
+
+# 自動的に更新されるので設定しないでください
+# Don't edit as it will automatically update
+vpn_server_ip=
+
+# VPNトンネルデバイス(NIC)
+# VPN tunnel device(NIC)
+vpn_device="vpn___VDEV__"
+
+# ルーティングを変更するRasPiのデバイス
+# List of RasPi's devices to change routing
+physical_devices="__PDEV__"
+
+# 起動時に自動起動するPCのMAC/IPアドレス
+# MAC/IP address of the PC that automatically starts at startup
+wol_mac="__WOL_MAC__"
+wol_ip="__WOL_IP__"

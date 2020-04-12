@@ -1,0 +1,79 @@
+#
+#   SoftEther VPN client startup script
+#               2020/04 Hideki Sakamoto
+#
+
+abort () {
+  echo $1
+  exit ${2:-1}
+}
+
+_prefix="/opt/vpnclient"
+_conf="${_prefix}/service.conf"
+_dhclient_pid="${_prefix}/dhclient.pid"
+
+while getopts f:n OPT
+do
+  case "$OPT" in
+    n)
+      _no_wol='yes'
+      shift
+      ;;
+    f)
+      _conf=$OPTARG
+      [ -r $_conf ] || abort "No such file: $_conf"
+      shift;shift
+      ;;
+  esac
+done
+
+_cmd=$1
+
+[ -r $_conf ] || abort "Cannot read configuration file: $_conf" 1
+. $_conf
+[ -n "$vpn_server" ] || abort "No \$vpn_server setting in $_conf." 1
+[ -n "$vpn_device" ] || abort "No \$vpn_device setting in $_conf." 1
+
+case "$vpn_server" in
+  [0-9]*)
+    vpn_server_ip=$vpn_server
+    ;;
+  *)
+    vpn_server_ip=$(/usr/bin/getent hosts ${vpn_server} | /usr/bin/awk '{print $1}')
+    ;;
+esac
+[ -n "$vpn_server_ip" ] || abort "Cannot resolv ${vpn_server}" 1
+/bin/sed -i 's/^\(vpn_server_ip=\).*$/\1"'${vpn_server_ip}'"/' $_conf
+
+case "$_cmd" in
+start)
+  /opt/vpnclient/vpnclient start
+  echo -n "waiting tunnel device"
+  until /sbin/ifconfig -s $vpn_device >/dev/null 2>&1
+  do
+    echo -n "."
+    sleep 1
+  done
+  echo "done."
+  /sbin/dhclient -pf $_dhclient_pid $vpn_device
+  if [ -n "$wol_mac" -a -n "$wol_ip" -a -z "$_no_wol" ]; then
+    if /bin/ping -c 1 -w 1 $wol_ip | /bin/grep -q '100% packet loss'
+    then
+      _bcaddr=$(/sbin/ifconfig $vpn_device | /bin/grep broadcast | /bin/sed 's/.*broadcast \([0-9.]*\)/\1/')
+      /usr/bin/wakeonlan -i $_bcaddr $wol_mac
+      echo -n "waiting start $wol_ip "
+      while /bin/ping -c 1 -w 1 $wol_ip | /bin/grep -q '100% packet loss'
+      do
+        echo -n "."
+        sleep 4
+        /usr/bin/wakeonlan -i $_bcaddr $wol_mac
+      done
+      echo "done."
+    fi
+  fi
+  ;;
+stop)
+  /sbin/dhclient -r -pf $_dhclient_pid $vpn_device
+  /opt/vpnclient/vpnclient stop
+  ;;
+esac

@@ -1,0 +1,23 @@
+#
+#	Dhclient preExec routing for SoftEther VPN client
+#                                 2020/04 Hideki Sakamoto
+#
+_conf="/opt/vpnclient/service.conf"
+
+if [ -r $_conf ]; then
+  . $_conf
+
+  case "$reason" in
+  BOUND|RENEW|REBIND|REBOOT|TIMEOUT)      
+    if [ "$interface" = "$vpn_device" -a "$vpn_default_route" = "yes" ]; then
+      _tmp=$(/sbin/route | /bin/grep ^default | /bin/grep -v $vpn_device | /usr/bin/head -1)
+      _gw=$(echo $_tmp | /usr/bin/awk '{print $2}')
+      _if=$(echo $_tmp | /usr/bin/awk '{print $NF}')
+      /sbin/ip -4 route add $vpn_server_ip via $_gw dev $_if >/dev/null
+    fi
+    ;;
+  BOUND6|RENEW6|REBIND6)
+    # ToDo or not ToDo :)
+    ;;
+  esac
+fi
