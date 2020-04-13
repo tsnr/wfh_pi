@@ -5,7 +5,7 @@ Work from home with Raspberry Pi & SoftEther VPN client
 セットアップを開始します
 "
 
-_m_no_root="sudo setup.sh としてroot権限で実行してください"
+_m_no_root="sudo bash ./setup.sh としてroot権限で実行してください"
 
 _m_ask_automake_password="ローカルアカウント用のパスワードを自動生成しますか？"
 _m_set_password="パスワードを設定してください"
@@ -25,15 +25,15 @@ _m_ask_user_name="
 "
 
 _m_ask_vpn_server="
-VPN serverのホスト名かグローバルIPアドレスを入力してください
+  VPN serverのホスト名かグローバルIPアドレスを入力してください
 "
 
 _m_ask_vpn_server_port="
-VPN serverのポート番号を入力してください
+  VPN serverのポート番号を入力してください
 "
 
 _m_ask_vpn_server_hub="
-VPN serverで接続するHubの名前を入力してください
+  VPN serverで接続するHubの名前を入力してください
 "
 
 _m_ask_vpn_default_route="
@@ -64,7 +64,7 @@ _m_ask_wol_ip="
     この機能を利用するためには、事前に端末に固定IPを割り当てるよう、
     ネットワーク管理者が設定しておく必要があります
     なお、MACアドレスだけ指定してIPアドレスは動的に割り当てるような
-    運用では、本キットによる設定では動きません。
+    運用の場合、本キットによる設定では動きません。
 "
 
 _m_ask_remmina_remote_name="
@@ -83,7 +83,7 @@ _m_ask_ntp_servers="
     指定してください。
 "
 
-_m_default_ntp_server="ntp1.jst.mfeed.ad.jp ntp1.jst.mfeed.ad.jp ntp1.jst.mfeed.ad.jp"
+_m_default_ntp_server="ntp1.jst.mfeed.ad.jp ntp2.jst.mfeed.ad.jp ntp3.jst.mfeed.ad.jp"
 _m_default_ntp_fallback="ntp.nict.jp"
 
 _m_ask_ntp_fallback_servers="
@@ -98,37 +98,37 @@ _m_vpn_connect_mode="
 "
 
 _m_ask_enable_sshd="
-sshdを有効にしますか？
-  特に理由がない限り、無効にしてください。
+  sshdを有効にしますか？
+    特に理由がない限り、無効にしてください。
 "
 
 _m_sshd_alert="
-sshdを有効化しました。
-  piアカウントのパスワードがデフォルトのままだったり、簡単なものの
-  場合は必ず変更してください。
+  sshdを有効化しました。
+    piアカウントのパスワードがデフォルトのままだったり、簡単なものの
+    場合は必ず変更してください。
 
-今すぐ変更しますか？
+  今すぐ変更しますか？
 "
 
 _m_ask_enable_vnc="
-VNC（リモートデスクトップ）を有効にしますか？
-  モニター、キーボード、マウスの提供が難しい場合に利用者のPCから
-  Raspberry Piを遠隔操作できる便利なソフトですが、リモートワーク
-  での利用にはライセンスの購入が必要なようです。
-    価格表: https://www.realvnc.com/en/connect/pricing/
+  VNC（リモートデスクトップ）を有効にしますか？
+    モニター、キーボード、マウスの提供が難しい場合に利用者のPCから
+    Raspberry Piを遠隔操作できる便利なソフトですが、リモートワーク
+    での利用にはライセンスの購入が必要なようです。
+      価格表: https://www.realvnc.com/en/connect/pricing/
 "
 
 _m_vnc_note="
-別ウィンドウで設定ツールが起動するので、以下の手順で設定してください
-  1. カーソルキーで'5 Interfacing Options'を選択[Enter]
-  2. 'P3 VNC'を選択
-  3. <はい(Yes)>を選択（設定完了画面で<了解(OK)>）
-  5. '7 Advanced Options'を選択
-  6. 'A5 Resolution'を選択
-  7. VNCで利用したい画面サイズを選択（設定完了画面で<了解(OK)>）
-  8. [Tab]キーを2回押して<Finish>を選択
-  9. reboot now? と聞かれるので、<いいえ(no)>を選択
-     （誤ってリブートした場合は最初からやり直しとなります）
+  別ウィンドウで設定ツールが起動するので、以下の手順で設定してください
+    1. カーソルキーで'5 Interfacing Options'を選択[Enter]
+    2. 'P3 VNC'を選択
+    3. <はい(Yes)>を選択（設定完了画面で<了解(OK)>）
+    5. '7 Advanced Options'を選択
+    6. 'A5 Resolution'を選択
+    7. VNCで利用したい画面サイズを選択（設定完了画面で<了解(OK)>）
+    8. [Tab]キーを2回押して<Finish>を選択
+    9. reboot now? と聞かれるので、<いいえ(no)>を選択
+       （誤ってリブートした場合は最初からやり直しとなります）
 "
 
 _m_check_soft_required="必要なソフトを確認しています"
@@ -145,11 +145,11 @@ _m_no_softether="
 "
 
 _m_install_softether="
-SoftEther VPN Clientをインストールします。
-  ライセンスを読むかどうか？
-  ライセンスをちゃんと読んだか？
-  ライセンスに同意するか？
-と聞かれるので、ライセンスを読んで同意してください。
+  SoftEther VPN Clientをインストールします。
+    ライセンスを読むかどうか？
+    ライセンスをちゃんと読んだか？
+    ライセンスに同意するか？
+  と聞かれるので、ライセンスを読んで同意してください。
 "
 
 _m_install_remmina="Remminaをインストールします"
@@ -159,11 +159,11 @@ _m_install_wakeonlan="wakeonlanをインストールします"
 _m_install_dnsutils="dnsutilsをインストールします"
 
 _m_setup_client_failed="
-SoftEther VPN clientの設定に失敗しました。
-  ${_wdir}/setupclient.txt に設定用のバッチファイルが保存されているので
-  手動で設定を行ってください
-  このファイルにはパスワード情報が平文で記録されています。
-  設定が終わったら忘れずに削除してください
+  SoftEther VPN clientの設定に失敗しました。
+    ${_wdir}/setupclient.txt に設定用のバッチファイルが保存されているので
+    手動で設定を行ってください
+    このファイルにはパスワード情報が平文で記録されています。
+    設定が終わったら忘れずに削除してください
 "
 
 _common_vpn_server_notice="
@@ -174,17 +174,17 @@ _common_vpn_server_notice="
 "
 
 _m_setup_vpn_server_failed="
-SoftEther VPN serverの設定に失敗しました。
+  SoftEther VPN serverの設定に失敗しました。
 $_common_vpn_server_notice
 "
 _m_ask_setup_server="
-SoftEther VPN serverに接続してこの端末用のアカウントを作成しますか？
-  VPN serverの管理者パスワードが必要です
-  手動で設定する場合は'n'を入力してください
+  SoftEther VPN serverに接続してこの端末用のアカウントを作成しますか？
+    VPN serverの管理者パスワードが必要です
+    手動で設定する場合は'n'を入力してください
 "
 
 _m_setup_vpn_server_note="
-端末用のアカウント作成をスキップしました。
+  端末用のアカウント作成をスキップしました。
 $_common_vpn_server_notice
 "
 
@@ -198,7 +198,7 @@ _m_setup_config_note="
 
 今回の設定内容の一部を ${_wdir}/setup.config に保存しました。
 別の端末をセットアップする際、このファイルをコピーして
-% sudo ./setup.sh -f setup.config
+% sudo bash ./setup.sh -f setup.config
 のように実行すると、2台目以降で入力を省略できます
 "
 
